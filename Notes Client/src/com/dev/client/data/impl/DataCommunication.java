@@ -22,13 +22,10 @@ public class DataCommunication implements DataCommunicationModel {
 
 	{
 		notesArraylist = new ArrayList<NoteModel>();
-		System.err.println("DataCommunication is created");
 	}
 
 	public void setDataSourceModel(DataSourceModel dataSource) {
-		System.err.println("tries to bind DataSourceModel");
 		this.dataSource = dataSource;
-
 	}
 
 	public DataCommunication() {

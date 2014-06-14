@@ -11,20 +11,12 @@ public class DataSource implements DataSourceModel {
 	private ArrayList<NoteModel> storedNodes;
 	private DataExchangeClient dataExchangeClient;
 
-	static {
-		System.err.println("DataSource is created");
-	}
-
 	public DataSource() {
 	}
 
-	
-	
 	public void setDataExchangeClient(DataExchangeClient dataExchangeClient) {
 		this.dataExchangeClient = dataExchangeClient;
 	}
-
-
 
 	public ArrayList<NoteModel> getStoredNodes() {
 		storedNodes = dataExchangeClient.getNodes();

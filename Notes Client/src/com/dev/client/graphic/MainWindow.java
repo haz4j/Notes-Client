@@ -11,6 +11,7 @@ public class MainWindow {
 
 	private JFrame frame;
 	private MainPanel mainPanel;
+
 	private final static ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beansConfFile.xml");
 
 	/**

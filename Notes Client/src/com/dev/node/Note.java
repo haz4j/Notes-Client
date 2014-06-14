@@ -13,6 +13,10 @@ public class Note implements NoteModel, Serializable {
 	private String text;
 	private boolean deleted = false;
 
+	public Note() {
+
+	}
+
 	public Note(int id, boolean changed, String text, boolean deleted) {
 		this.setId(id);
 		this.setChanged(changed);
