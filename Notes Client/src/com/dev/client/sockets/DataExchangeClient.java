@@ -7,18 +7,38 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import com.dev.node.NoteModel;
+import org.springframework.stereotype.Component;
 
+import com.dev.note.NoteModel;
+
+/**
+ * The Class DataExchangeClient.
+ */
+@Component
 public class DataExchangeClient {
 
+	/** The portnumber. */
 	private final int PORTNUMBER = 2010;
-	private final String HOSTNAME = "localhost";
-	private ArrayList<NoteModel> listOfNodes;
 
+	/** The hostname. */
+	private final String HOSTNAME = "localhost";
+
+	/** The list of notes. */
+	private ArrayList<NoteModel> listOfNotes;
+
+	/**
+	 * Instantiates a new data exchange client.
+	 */
 	public DataExchangeClient() {
 	}
 
-	public ArrayList<NoteModel> getNodes() {
+	/**
+	 * Gets the notes. Format is very simple: if we need to send object from
+	 * client we send "push object" from client. Or "get object" otherwise
+	 *
+	 * @return the notes
+	 */
+	public ArrayList<NoteModel> getNotes() {
 
 		try (Socket socket = new Socket(HOSTNAME, PORTNUMBER);
 				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -26,7 +46,7 @@ public class DataExchangeClient {
 			oos.writeObject("get object");
 			Thread.sleep(2000);
 
-			listOfNodes = (ArrayList<NoteModel>) ois.readObject();
+			listOfNotes = (ArrayList<NoteModel>) ois.readObject();
 
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about host " + HOSTNAME);
@@ -37,18 +57,24 @@ public class DataExchangeClient {
 			System.err.println("Couldn't get I/O for the connection to " + HOSTNAME);
 			System.exit(1);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return listOfNodes;
+		return listOfNotes;
 	}
 
-	public void pushNodes(ArrayList<NoteModel> storedNodes) {
+	/**
+	 * Push notes. Format is very simple: if we need to send object from client
+	 * we send "push object" from client. Or "get object" otherwise
+	 *
+	 * @param storedNotes
+	 *            the stored notes
+	 */
+	public void pushNotes(ArrayList<NoteModel> storedNotes) {
 		try (Socket socket = new Socket(HOSTNAME, PORTNUMBER);
 				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 				ObjectInputStream ois = new ObjectInputStream(socket.getInputStream())) {
 			oos.writeObject("push object");
-			oos.writeObject(storedNodes);
+			oos.writeObject(storedNotes);
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about host " + HOSTNAME);
 			System.exit(1);

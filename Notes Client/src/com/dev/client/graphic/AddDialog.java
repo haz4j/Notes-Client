@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.dev.client.graphic;
 
 import java.awt.BorderLayout;
@@ -18,22 +21,57 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
+/**
+ * The Class AddDialog manages add dialog of hew note. Sounds logically.
+ */
 public class AddDialog extends JDialog implements ActionListener {
+
+	/** The dialog. */
 	private static AddDialog dialog;
+
+	/** The value from dialog. */
 	private static String value = "";
+
+	/** The initial value. */
 	private String initialValue;
+
+	/** Text pane */
 	JTextPane jTextPane;
 
-	public static String showDialog(Component frameComp,
-			Component locationComp, String title, String initialValue) {
+	/**
+	 * Show dialog.
+	 *
+	 * @param frameComp
+	 *            Link to main frame. It's needed to place dialog to the center
+	 *            of frame.
+	 * @param locationComp
+	 *            Parent component
+	 * @param title
+	 *            the title of dialog
+	 * @param initialValue
+	 *            the initial value of text
+	 * @return the string
+	 */
+	public static String showDialog(Component frameComp, Component locationComp, String title, String initialValue) {
 		Frame frame = JOptionPane.getFrameForComponent(frameComp);
 		dialog = new AddDialog(frame, locationComp, title, initialValue);
 		dialog.setVisible(true);
 		return value;
 	}
 
-	private AddDialog(Frame frame, Component locationComp, String title,
-			String initialValue) {
+	/**
+	 * Instantiates a new add dialog.
+	 *
+	 * @param frame
+	 *            the frame
+	 * @param locationComp
+	 *            the location comp
+	 * @param title
+	 *            the title
+	 * @param initialValue
+	 *            the initial value
+	 */
+	private AddDialog(Frame frame, Component locationComp, String title, String initialValue) {
 		super(frame, title, true);
 
 		this.initialValue = initialValue;
@@ -82,6 +120,12 @@ public class AddDialog extends JDialog implements ActionListener {
 	}
 
 	// Handle clicks on the Set and Cancel buttons.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if ("Set".equals(e.getActionCommand())) {
 			AddDialog.value = (String) (jTextPane.getText());

@@ -2,35 +2,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
+	<context:annotation-config />
+	<context:component-scan base-package="com.dev.client.graphic" />
+	<context:component-scan base-package="com.dev.client.sockets" />
+	<context:component-scan base-package="com.dev.client.data" />
 
-	<bean id="mainWindow" name="mainWindow"
-		class="com.dev.client.graphic.MainWindow">
-	</bean>
-	
 	<bean id="frame" name="frame" class="javax.swing.JFrame">
 	</bean>
-		
-	<bean id="mainPanel" name="mainPanel" class="com.dev.client.graphic.MainPanel">
-		<property name="mainWindow" ref="mainWindow"></property>
-		<property name="frame" ref="frame"></property>
-		<property name="dataCommunicationModel" ref="DataCommunicationModel"></property>
-	</bean>
 
-	<bean id="DataCommunicationModel" name="DataCommunicationModel"
-		class="com.dev.client.data.impl.DataCommunication">
-		<property name="dataSourceModel" ref="DataSourceModel"></property>
-	</bean>
-
-	<bean id="DataSourceModel" name="DataSourceModel"
-		class="com.dev.client.data.impl.DataSource">
-		<property name="dataExchangeClient" ref="dataExchangeClient"></property>
-	</bean>
-
-	<bean id="dataExchangeClient" name="dataExchangeClient"
-		class="com.dev.client.sockets.DataExchangeClient">
-	</bean>
-	
 </beans>

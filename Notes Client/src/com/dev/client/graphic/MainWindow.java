@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.dev.client.graphic;
 
 import java.awt.EventQueue;
@@ -6,16 +9,28 @@ import javax.swing.JFrame;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
+/**
+ * The Class MainWindow.
+ */
+@Component
 public class MainWindow {
 
+	/** The frame. */
 	private JFrame frame;
+
+	/** The main panel. */
 	private MainPanel mainPanel;
 
+	/** The Constant applicationContext. */
 	private final static ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beansConfFile.xml");
 
 	/**
 	 * Launch the application.
+	 *
+	 * @param args
+	 *            the arguments
 	 */
 	public static void main(String[] args) {
 

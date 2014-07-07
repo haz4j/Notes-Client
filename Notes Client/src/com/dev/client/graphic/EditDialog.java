@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.dev.client.graphic;
 
 import java.awt.BorderLayout;
@@ -18,22 +21,56 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
+/**
+ * The Class EditDialog handles edit dialog.
+ */
 public class EditDialog extends JDialog implements ActionListener {
+
+	/** The dialog. */
 	private static EditDialog dialog;
+
+	/** The value. */
 	private static String value = "";
+
+	/** The initial value. */
 	private String initialValue;
+
+	/** The j text pane. */
 	JTextPane jTextPane;
 
-	public static String showDialog(Component frameComp,
-			Component locationComp, String title, String initialValue) {
+	/**
+	 * Show dialog.
+	 *
+	 * @param frameComp
+	 *            the frame comp
+	 * @param locationComp
+	 *            the location comp
+	 * @param title
+	 *            the title
+	 * @param initialValue
+	 *            the initial value
+	 * @return the string
+	 */
+	public static String showDialog(Component frameComp, Component locationComp, String title, String initialValue) {
 		Frame frame = JOptionPane.getFrameForComponent(frameComp);
 		dialog = new EditDialog(frame, locationComp, title, initialValue);
 		dialog.setVisible(true);
 		return value;
 	}
 
-	private EditDialog(Frame frame, Component locationComp, String title,
-			String initialValue) {
+	/**
+	 * Instantiates a new edits the dialog.
+	 *
+	 * @param frame
+	 *            the frame
+	 * @param locationComp
+	 *            the location comp
+	 * @param title
+	 *            the title
+	 * @param initialValue
+	 *            the initial value
+	 */
+	private EditDialog(Frame frame, Component locationComp, String title, String initialValue) {
 		super(frame, title, true);
 
 		this.initialValue = initialValue;
@@ -82,6 +119,12 @@ public class EditDialog extends JDialog implements ActionListener {
 	}
 
 	// Handle clicks on the Set and Cancel buttons.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if ("Set".equals(e.getActionCommand())) {
 			EditDialog.value = (String) (jTextPane.getText());

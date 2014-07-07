@@ -1,7 +1,9 @@
+/*
+ * 
+ */
 package com.dev.client.graphic;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -17,34 +19,66 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
-import com.dev.client.data.model.DataCommunicationModel;
-import com.dev.node.Note;
-import com.dev.node.NoteModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.dev.client.data.DataCommunicationModel;
+import com.dev.note.Note;
+import com.dev.note.NoteModel;
+
+/**
+ * The Class MainPanel. Everything places on main panel.
+ */
+@Component
 class MainPanel extends JPanel {
 
-	private DataCommunicationModel dataCommunicationModel;
-	private ArrayList<NoteModel> notesArraylist;
-	private JFrame frame;
-	private JPanel notesPanel;
+	/** The main window. */
+	@Autowired
 	private MainWindow mainWindow;
+
+	/** The frame for dialogs. */
+	@Autowired
+	private JFrame frame;
+
+	/** The link to data communication model. */
+	@Autowired
+	private DataCommunicationModel dataCommunicationModel;
+
+	/** The notes arraylist. */
+	private ArrayList<NoteModel> notesArraylist;
+
+	/** The notes panel that contains all notes. */
+	private JPanel notesPanel;
+
+	/** The scroll pane. */
 	private JScrollPane jScrollPane;
+
+	/** The top panel - contains buttons. */
 	private JPanel topPanel;
+
+	/** The buttton "new note". */
 	private JButton btnNewNote;
-	private Component horizontalStrut;
+
+	private java.awt.Component horizontalStrut;
+
+	/** The label hello username. */
 	private JLabel lblHelloUsername;
+
+	/** The buttton synchronize. */
 	private JButton btnSynchronize;
+
 	private Border raisedetched;
+
+	/** The bottom panel. */
 	private JPanel bottomPanel;
-	private JLabel lblProgressToSynchronization;
+
+	/** The flow layout. */
 	private FlowLayout flowLayout;
-	private JProgressBar progressBar;
 
 	/**
 	 * Create the panel.
@@ -54,18 +88,39 @@ class MainPanel extends JPanel {
 
 	}
 
+	/**
+	 * Sets the main window.
+	 *
+	 * @param mainWindow
+	 *            the new main window
+	 */
 	public void setMainWindow(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 	}
 
+	/**
+	 * Sets the data communication model.
+	 *
+	 * @param dataCommunicationModel
+	 *            the new data communication model
+	 */
 	public void setDataCommunicationModel(DataCommunicationModel dataCommunicationModel) {
 		this.dataCommunicationModel = dataCommunicationModel;
 	}
 
+	/**
+	 * Sets the frame.
+	 *
+	 * @param frame
+	 *            the new frame
+	 */
 	public void setFrame(JFrame frame) {
 		this.frame = frame;
 	}
 
+	/**
+	 * Initialize.
+	 */
 	public void initialize() {
 		notesArraylist = dataCommunicationModel.getNotesArraylist();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -120,19 +175,17 @@ class MainPanel extends JPanel {
 		bottomPanel = new JPanel();
 		flowLayout = (FlowLayout) bottomPanel.getLayout();
 		flowLayout.setAlignment(FlowLayout.TRAILING);
-		bottomPanel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		bottomPanel.setAlignmentY(java.awt.Component.BOTTOM_ALIGNMENT);
 		bottomPanel.setMaximumSize(new Dimension(MyConsts.BOTTOMPANELWIDTH, MyConsts.BOTTOMPANELHEIGHT));
 		add(bottomPanel);
 
-		lblProgressToSynchronization = new JLabel("Progress to synchronization: ");
-		bottomPanel.add(lblProgressToSynchronization);
-
-		progressBar = new JProgressBar();
-		progressBar.setToolTipText("Progress to sychronization:");
-		bottomPanel.add(progressBar);
-
 	}
 
+	/**
+	 * Calculates notes panel size.
+	 *
+	 * @return the int
+	 */
 	private int calcNotesPanelSize() {
 		int i = 0;
 		for (Iterator<NoteModel> iterator = notesArraylist.iterator(); iterator.hasNext();) {
@@ -144,12 +197,15 @@ class MainPanel extends JPanel {
 		return i;
 	}
 
+	/**
+	 * Refresh notes panel.
+	 */
 	private void refreshNotesPanel() {
 		notesPanel.removeAll();
 		notesPanel.setPreferredSize(new Dimension(MyConsts.WINDOWWIDTH, (calcNotesPanelSize()) * MyConsts.NOTEWHEIGHT));
 		for (int i = 0; i < notesArraylist.size(); i++) {
 			NoteModel currentNote = notesArraylist.get(i);
-			if (!currentNote.isDeleted()) {
+			if (notesArraylist.get(i) != null && !currentNote.isDeleted()) {
 				NotePanel notePanel = new NotePanel(i, this, currentNote.getText());
 				notePanel.setFrame(frame);
 				notesPanel.add(notePanel);
@@ -157,6 +213,12 @@ class MainPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Adds the note.
+	 *
+	 * @param text
+	 *            the text
+	 */
 	protected void addNote(String text) {
 		final Note note = new Note(notesArraylist.size() + 1, true, text, false);
 		CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -172,6 +234,12 @@ class MainPanel extends JPanel {
 		jScrollPane.getVerticalScrollBar().setValue(0);
 	}
 
+	/**
+	 * Delete note.
+	 *
+	 * @param noteId
+	 *            the note id
+	 */
 	protected void deleteNote(int noteId) {
 		CountDownLatch countDownLatch = new CountDownLatch(1);
 		DeleteThread deleteThread = new DeleteThread(notesArraylist, noteId, countDownLatch);
@@ -186,6 +254,14 @@ class MainPanel extends JPanel {
 		jScrollPane.getVerticalScrollBar().setValue(0);
 	}
 
+	/**
+	 * Edits the note.
+	 *
+	 * @param noteId
+	 *            the note id
+	 * @param newText
+	 *            the new text
+	 */
 	protected void editNote(int noteId, String newText) {
 		CountDownLatch countDownLatch = new CountDownLatch(1);
 		EditThread editThread = new EditThread(notesArraylist, noteId, newText, countDownLatch);
@@ -200,6 +276,9 @@ class MainPanel extends JPanel {
 		jScrollPane.getVerticalScrollBar().setValue(0);
 	}
 
+	/**
+	 * Synchronize notes.
+	 */
 	protected void synchronizeNotes() {
 
 		CountDownLatch countDownLatch = new CountDownLatch(1);
